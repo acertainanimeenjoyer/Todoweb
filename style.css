@@ -1,0 +1,14 @@
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+#taskForm {
+  margin-bottom: 20px;
+}
+li {
+  margin-bottom: 10px;
+}
+.completed {
+  text-decoration: line-through;
+  color: gray;
+}
