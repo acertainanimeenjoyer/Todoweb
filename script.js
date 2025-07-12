@@ -7,7 +7,12 @@ const taskList = document.getElementById("taskList");
 taskForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const text = taskInput.value.trim();
-  if (!text) return;
+  if (!text) {
+    alert("⚠️ Task cannot be empty!");
+    return;
+  }
+
+  console.log("📝 Submitting:", { description: text });
 
   try {
     const res = await fetch(API_URL, {
@@ -17,7 +22,8 @@ taskForm.addEventListener("submit", async (e) => {
     });
 
     if (!res.ok) {
-      throw new Error(`Server returned ${res.status}`);
+      const errMsg = await res.text();
+      throw new Error(`Server returned ${res.status}: ${errMsg}`);
     }
 
     const task = await res.json();
@@ -25,7 +31,7 @@ taskForm.addEventListener("submit", async (e) => {
     taskInput.value = "";
   } catch (error) {
     console.error("❌ Failed to add task:", error);
-    alert("Failed to add task. Please try again.");
+    alert("Failed to add task. Please check the console or try again later.");
   }
 });
 
@@ -37,7 +43,7 @@ async function loadTasks() {
     tasks.forEach(addTaskToDOM);
   } catch (error) {
     console.error("❌ Failed to load tasks:", error);
-    taskList.innerHTML = "<li>Failed to load tasks. Please try again later.</li>";
+    taskList.innerHTML = "<li>⚠️ Failed to load tasks.</li>";
   }
 }
 
